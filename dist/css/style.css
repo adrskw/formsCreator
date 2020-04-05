@@ -1,0 +1,26 @@
+body {
+    text-align: center;
+}
+
+form {
+    display: inline-block;
+}
+
+form .form-element { 
+    display: block;
+}
+
+form label {
+    width: 200px;
+    text-align: right;
+    margin-right: 10px;
+    float: left;
+}
+form input, form textarea, form select {
+    float: left;
+    margin-bottom: 20px;
+}
+form button {
+    font-size: 16px;
+    width: 50%;
+}
