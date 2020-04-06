@@ -1,4 +1,4 @@
-"use strict";
+export { LocStorage };
 class LocStorage {
     saveDocument(formValues) {
         const documentId = "document-" + Date.now();

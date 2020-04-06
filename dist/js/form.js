@@ -1,3 +1,4 @@
+import { LocStorage } from './storage';
 export { Form };
 class Form {
     constructor(fields) {
@@ -12,14 +13,26 @@ class Form {
             field.render(div);
             formElement.appendChild(div);
         }
-        const button = document.createElement("button");
-        button.type = "submit";
-        button.innerHTML = "Wyślij";
-        button.addEventListener("click", (e) => {
-            console.log(this.getValue());
+        const divWrapButtons = document.createElement("div");
+        divWrapButtons.className = "form-element";
+        const buttonGoBack = document.createElement("button");
+        buttonGoBack.type = "button";
+        buttonGoBack.innerHTML = "Wstecz";
+        buttonGoBack.addEventListener("click", (e) => {
+            window.location.href = "/index.html";
             e.preventDefault();
         });
-        formElement.appendChild(button);
+        divWrapButtons.appendChild(buttonGoBack);
+        const buttonSave = document.createElement("button");
+        buttonSave.type = "submit";
+        buttonSave.innerHTML = "Zapisz";
+        buttonSave.addEventListener("click", (e) => {
+            this.save();
+            window.location.href = "/index.html";
+            e.preventDefault();
+        });
+        divWrapButtons.appendChild(buttonSave);
+        formElement.appendChild(divWrapButtons);
         parent.appendChild(formElement);
     }
     getValue() {
@@ -28,5 +41,9 @@ class Form {
             resultValues[field.type + "_" + field.name] = field.getValue();
         }
         return resultValues;
+    }
+    save() {
+        const locStorage = new LocStorage();
+        locStorage.saveDocument(this.getValue());
     }
 }
