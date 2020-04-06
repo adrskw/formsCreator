@@ -10,4 +10,4 @@ const form = new Form([
     new TextAreaField("comments", "Uwagi")
 ]);
 
-form.render(document.body);
+form.render(document.getElementById("content")!);

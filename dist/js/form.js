@@ -1,4 +1,4 @@
-import { LocStorage } from './storage';
+import { LocStorage } from './storage.js';
 export { Form };
 class Form {
     constructor(fields) {

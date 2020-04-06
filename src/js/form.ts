@@ -1,5 +1,5 @@
-import { IField } from './fields';
-import { LocStorage } from './storage';
+import { IField } from './fields.js';
+import { LocStorage } from './storage.js';
 export { Form };
 
 class Form {
