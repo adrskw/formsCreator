@@ -7,8 +7,8 @@ class LocStorage {
         return documentId;
     }
     loadDocument(documentId) {
-        const document = JSON.parse(localStorage.getItem(documentId));
-        return document;
+        const doc = JSON.parse(localStorage.getItem(documentId));
+        return doc;
     }
     getDocuments() {
         const documentsListJson = localStorage.getItem("documentsList");
@@ -26,5 +26,23 @@ class LocStorage {
         }
         documents.push(documentId);
         localStorage.setItem("documentsList", JSON.stringify(documents));
+    }
+}
+class DocumentList {
+    constructor() {
+        this.list = [];
+        this.locStorage = new LocStorage();
+    }
+    getDocumentList() {
+        this.list = this.locStorage.getDocuments();
+    }
+    render(parent) {
+        const table = document.createElement("table");
+        const tableHeader = table.createTHead();
+        tableHeader.insertRow().insertCell().innerText = "Documents:";
+        const tableBody = table.createTBody();
+        for (const documentId in this.list) {
+            tableBody.insertRow().insertCell().innerText = documentId;
+        }
     }
 }

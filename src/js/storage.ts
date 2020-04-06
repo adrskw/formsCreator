@@ -42,3 +42,23 @@ class LocStorage implements IStorage {
         localStorage.setItem("documentsList", JSON.stringify(documents));
     }
 }
+
+class DocumentList {
+    list : string[] = [];
+    private locStorage = new LocStorage();
+
+    getDocumentList() : void {
+        this.list = this.locStorage.getDocuments()
+    }
+
+    render(parent : HTMLElement) : void {
+        const table = document.createElement("table");
+        const tableHeader = table.createTHead();
+        tableHeader.insertRow().insertCell().innerText = "Documents:";
+        const tableBody = table.createTBody();
+
+        for (const documentId in this.list) {
+            tableBody.insertRow().insertCell().innerText = documentId;
+        }
+    }
+}
