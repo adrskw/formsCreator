@@ -3,3 +3,42 @@ interface IStorage {
     loadDocument(documentId : string) : {[key: string]: string},
     getDocuments() : string[]
 }
+
+class LocStorage implements IStorage {
+    saveDocument(formValues: { [key: string]: string; }): string {
+        const documentId : string = "document-" + Date.now();
+        this.addDocumentIdToDocumentsList(documentId);
+
+        localStorage.setItem(documentId, JSON.stringify(formValues));
+
+        return documentId;
+    }
+    loadDocument(documentId: string): { [key: string]: string; } {
+        const document : { [key: string]: string; } = JSON.parse(localStorage.getItem(documentId)!);
+
+        return document;
+    }
+    getDocuments(): string[] {
+        const documentsListJson = localStorage.getItem("documentsList");
+        let documentsList : string[] = [];
+ 
+        if (documentsListJson !== null) {
+            documentsList = JSON.parse(documentsListJson);
+        }
+
+        return documentsList;
+    }
+
+    private addDocumentIdToDocumentsList(documentId : string) : void {
+        const documentsList = localStorage.getItem("documentsList");
+        let documents : string[] = [];
+
+        if (documentsList !== null) {
+            documents = JSON.parse(documentsList);
+        }
+
+        documents.push(documentId);
+
+        localStorage.setItem("documentsList", JSON.stringify(documents));
+    }
+}
