@@ -1,4 +1,4 @@
-export { FieldType, Field, InputField, TextAreaField, SelectField, CheckboxField }
+export { FieldType, IField, InputField, TextAreaField, SelectField, CheckboxField }
 
 enum FieldType {
     TEXT = "text",
@@ -9,7 +9,7 @@ enum FieldType {
     CHECKBOX = "checkbox"
 }
 
-interface Field {
+interface IField {
     name: string,
     label: string,
     type: FieldType,
@@ -18,9 +18,9 @@ interface Field {
 }
 
 class FieldLabel {
-    field: Field;
+    field: IField;
 
-    constructor(field: Field) {
+    constructor(field: IField) {
         this.field = field;
     }
 
@@ -33,7 +33,7 @@ class FieldLabel {
     }
 }
 
-class InputField implements Field {
+class InputField implements IField {
     element: HTMLInputElement;
     name: string;
     label: string;
@@ -61,7 +61,7 @@ class InputField implements Field {
     }
 }
 
-class TextAreaField implements Field {
+class TextAreaField implements IField {
     element: HTMLTextAreaElement;
     name: string;
     label: string;
@@ -88,7 +88,7 @@ class TextAreaField implements Field {
     }
 }
 
-class SelectField implements Field {
+class SelectField implements IField {
     element: HTMLSelectElement;
     name: string;
     label: string;
@@ -122,7 +122,7 @@ class SelectField implements Field {
     }
 }
 
-class CheckboxField implements Field {
+class CheckboxField implements IField {
     element: HTMLInputElement;
     name: string;
     label: string;

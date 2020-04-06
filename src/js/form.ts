@@ -1,10 +1,10 @@
-import { Field } from './fields';
+import { IField } from './fields';
 export { Form };
 
 class Form {
-    private fields: Field[];
+    private fields: IField[];
     
-    constructor(fields: Field[]) {
+    constructor(fields: IField[]) {
         this.fields = fields;
     }
 
