@@ -1,4 +1,4 @@
-export { LocStorage }
+export { LocStorage, DocumentList }
 
 interface IStorage {
     saveDocument(formValues : {[key: string]: string}) : string,
@@ -62,5 +62,7 @@ class DocumentList {
         for (const documentId in this.list) {
             tableBody.insertRow().insertCell().innerText = documentId;
         }
+
+        parent.appendChild(table);
     }
 }

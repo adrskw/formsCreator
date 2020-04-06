@@ -1,4 +1,4 @@
-export { LocStorage };
+export { LocStorage, DocumentList };
 class LocStorage {
     saveDocument(formValues) {
         const documentId = "document-" + Date.now();
@@ -44,5 +44,6 @@ class DocumentList {
         for (const documentId in this.list) {
             tableBody.insertRow().insertCell().innerText = documentId;
         }
+        parent.appendChild(table);
     }
 }
