@@ -1,99 +1,151 @@
-export { FieldType, InputField, TextAreaField, SelectField, CheckboxField };
-var FieldType;
-(function (FieldType) {
-    FieldType["TEXT"] = "text";
-    FieldType["TEXTAREA"] = "textarea";
-    FieldType["DATE"] = "date";
-    FieldType["EMAIL"] = "email";
-    FieldType["SELECT"] = "select";
-    FieldType["CHECKBOX"] = "checkbox";
-})(FieldType || (FieldType = {}));
+export { FieldType, Field, InputField, TextAreaField, SelectField, CheckboxField }
+
+enum FieldType {
+    TEXT = "text",
+    TEXTAREA = "textarea",
+    DATE = "date",
+    EMAIL = "email",
+    SELECT = "select",
+    CHECKBOX = "checkbox"
+}
+
+interface Field {
+    name: string,
+    label: string,
+    type: FieldType,
+    render(parent: HTMLElement): void,
+    getValue(): string;
+}
+
 class FieldLabel {
-    constructor(field) {
+    field: Field;
+
+    constructor(field: Field) {
         this.field = field;
     }
-    generate() {
+
+    generate(): HTMLLabelElement {
         let label = document.createElement("label");
         label.htmlFor = this.field.name;
         label.innerHTML = this.field.label;
+
         return label;
     }
 }
-class InputField {
-    constructor(name, label, type) {
+
+class InputField implements Field {
+    element: HTMLInputElement;
+    name: string;
+    label: string;
+    type: FieldType;
+
+    constructor(name: string, label: string, type: FieldType) {
         this.name = name;
         this.label = label;
+
         this.element = document.createElement("input");
         this.element.name = this.element.id = name;
         this.element.type = this.type = type;
     }
-    render(parent) {
+
+    render(parent: HTMLElement): void {
         let fieldLabel = new FieldLabel(this);
-        let labelElement = fieldLabel.generate();
+        let labelElement = fieldLabel.generate() as HTMLLabelElement;
+
         parent.appendChild(labelElement);
         parent.appendChild(this.element);
     }
-    getValue() {
+
+    getValue(): string {
         return this.element.value;
     }
 }
-class TextAreaField {
-    constructor(name, label) {
-        this.type = FieldType.TEXTAREA;
+
+class TextAreaField implements Field {
+    element: HTMLTextAreaElement;
+    name: string;
+    label: string;
+    type = FieldType.TEXTAREA;
+
+    constructor(name: string, label: string) {
         this.name = name;
         this.label = label;
+
         this.element = document.createElement("textarea");
         this.element.name = this.element.id = name;
     }
-    render(parent) {
+
+    render(parent: HTMLElement): void {
         let fieldLabel = new FieldLabel(this);
-        let labelElement = fieldLabel.generate();
+        let labelElement = fieldLabel.generate() as HTMLLabelElement;
+
         parent.appendChild(labelElement);
         parent.appendChild(this.element);
     }
-    getValue() {
+
+    getValue(): string {
         return this.element.value;
     }
 }
-class SelectField {
-    constructor(name, label, options) {
-        this.type = FieldType.TEXTAREA;
+
+class SelectField implements Field {
+    element: HTMLSelectElement;
+    name: string;
+    label: string;
+    type = FieldType.TEXTAREA;
+
+    constructor(name: string, label: string, options: string[]) {
         this.name = name;
         this.label = label;
+
         this.element = document.createElement("select");
         this.element.name = this.element.id = name;
+
         for (const optionValue of options) {
             let optionElement = document.createElement("option");
             optionElement.value = optionElement.text = optionValue;
+
             this.element.appendChild(optionElement);
         }
     }
-    render(parent) {
+
+    render(parent: HTMLElement): void {
         let fieldLabel = new FieldLabel(this);
-        let labelElement = fieldLabel.generate();
+        let labelElement = fieldLabel.generate() as HTMLLabelElement;
+
         parent.appendChild(labelElement);
         parent.appendChild(this.element);
     }
-    getValue() {
+
+    getValue(): string {
         return this.element.value;
     }
 }
-class CheckboxField {
-    constructor(name, label) {
-        this.type = FieldType.CHECKBOX;
+
+class CheckboxField implements Field {
+    element: HTMLInputElement;
+    name: string;
+    label: string;
+    type = FieldType.CHECKBOX;
+
+    constructor(name: string, label: string) {
         this.name = name;
         this.label = label;
+
         this.element = document.createElement("input");
         this.element.name = this.element.id = name;
         this.element.type = this.type.toString();
     }
-    render(parent) {
+
+    render(parent: HTMLElement): void {
         let fieldLabel = new FieldLabel(this);
-        let labelElement = fieldLabel.generate();
+        let labelElement = fieldLabel.generate() as HTMLLabelElement;
+
         parent.appendChild(labelElement);
         parent.appendChild(this.element);
     }
-    getValue() {
+
+    getValue(): string {
         return this.element.value;
     }
 }

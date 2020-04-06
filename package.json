@@ -1,7 +1,7 @@
 {
   "name": "formscreator",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "typescript": "^3.8.3"
   },
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc -w"
+    "start": "lite-server"
   },
   "author": "",
   "license": "ISC",
