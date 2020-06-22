@@ -15,11 +15,13 @@ class LocStorage implements IStorage {
 
         return documentId;
     }
+    
     loadDocument(documentId: string): { [key: string]: string; } {
         const doc : { [key: string]: string; } = JSON.parse(localStorage.getItem(documentId)!);
 
         return doc;
     }
+
     getDocuments(): string[] {
         const documentsListJson = localStorage.getItem("documentsList");
         let documentsList : string[] = [];
