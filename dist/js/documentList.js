@@ -1,4 +1,5 @@
 import { LocStorage } from "./storage.js";
+export { DocumentList };
 class DocumentList {
     constructor() {
         this.list = [];
@@ -41,6 +42,3 @@ class DocumentList {
         parent.appendChild(table);
     }
 }
-let docList = new DocumentList();
-docList.getDocumentList();
-docList.render(document.getElementById("content"));
