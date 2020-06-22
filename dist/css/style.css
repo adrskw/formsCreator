@@ -8,6 +8,10 @@ html, body {
     text-align: center;
 }
 
+#content table {
+    margin: 0 auto;
+}
+
 form {
     display: inline-block;
 }
