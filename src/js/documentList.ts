@@ -9,7 +9,7 @@ class DocumentList {
         this.list = this.locStorage.getDocuments();
     }
 
-    getDocument(documentId : string) : { [key: string]: string; } {
+    getDocument(documentId : string) : any {
         return this.locStorage.loadDocument(documentId);
     }
 
@@ -23,8 +23,6 @@ class DocumentList {
         tableHeaderRow.insertCell().innerText = "Documents:";
         tableHeaderRow.insertCell().innerText = "Actions:";
         const tableBody = table.createTBody();
-
-        console.log(this.list);
 
         for (const documentId of this.list) {
             const tableRow = tableBody.insertRow();

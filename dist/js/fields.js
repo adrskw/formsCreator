@@ -20,12 +20,14 @@ class FieldLabel {
     }
 }
 class InputField {
-    constructor(name, label, type) {
+    constructor(name, label, type, value = null) {
+        this.options = null;
         this.name = name;
         this.label = label;
         this.element = document.createElement("input");
         this.element.name = this.element.id = name;
         this.element.type = this.type = type;
+        this.setValue(value);
     }
     render(parent) {
         let fieldLabel = new FieldLabel(this);
@@ -36,14 +38,19 @@ class InputField {
     getValue() {
         return this.element.value;
     }
+    setValue(value) {
+        this.element.value = value;
+    }
 }
 class TextAreaField {
-    constructor(name, label) {
+    constructor(name, label, value = null) {
         this.type = FieldType.TEXTAREA;
+        this.options = null;
         this.name = name;
         this.label = label;
         this.element = document.createElement("textarea");
         this.element.name = this.element.id = name;
+        this.setValue(value);
     }
     render(parent) {
         let fieldLabel = new FieldLabel(this);
@@ -54,38 +61,51 @@ class TextAreaField {
     getValue() {
         return this.element.value;
     }
+    setValue(value) {
+        this.element.value = value;
+    }
 }
 class SelectField {
-    constructor(name, label, options) {
-        this.type = FieldType.TEXTAREA;
+    constructor(name, label, options, value = null) {
+        this.type = FieldType.SELECT;
         this.name = name;
         this.label = label;
+        this.options = options;
         this.element = document.createElement("select");
         this.element.name = this.element.id = name;
-        for (const optionValue of options) {
+        this.generateOptions();
+        this.setValue(value);
+    }
+    render(parent) {
+        let fieldLabel = new FieldLabel(this);
+        let labelElement = fieldLabel.generate();
+        parent.appendChild(labelElement);
+        parent.appendChild(this.element);
+    }
+    getValue() {
+        return this.element.value;
+    }
+    setValue(value) {
+        this.element.value = value;
+    }
+    generateOptions() {
+        for (const optionValue of this.options) {
             let optionElement = document.createElement("option");
             optionElement.value = optionElement.text = optionValue;
             this.element.appendChild(optionElement);
         }
     }
-    render(parent) {
-        let fieldLabel = new FieldLabel(this);
-        let labelElement = fieldLabel.generate();
-        parent.appendChild(labelElement);
-        parent.appendChild(this.element);
-    }
-    getValue() {
-        return this.element.value;
-    }
 }
 class CheckboxField {
-    constructor(name, label) {
+    constructor(name, label, value = "false") {
         this.type = FieldType.CHECKBOX;
+        this.options = null;
         this.name = name;
         this.label = label;
         this.element = document.createElement("input");
         this.element.name = this.element.id = name;
         this.element.type = this.type.toString();
+        this.setValue(value);
     }
     render(parent) {
         let fieldLabel = new FieldLabel(this);
@@ -94,6 +114,14 @@ class CheckboxField {
         parent.appendChild(this.element);
     }
     getValue() {
-        return this.element.value;
+        return this.element.checked.toString();
+    }
+    setValue(value) {
+        if (value == "true") {
+            this.element.checked = true;
+        }
+        else {
+            this.element.checked = false;
+        }
     }
 }

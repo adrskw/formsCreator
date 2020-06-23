@@ -8,9 +8,7 @@ class Router {
         const query: string = window.location.search.substr(1);
         const urlParams = new URLSearchParams(query); 
         const param = urlParams.get(key);
-
-        console.log(window.location);
-        
+                
         return param;
     }
 }

@@ -1,23 +1,28 @@
 export { LocStorage }
 
 interface IStorage {
-    saveDocument(formValues : {[key: string]: string}) : string,
-    loadDocument(documentId : string) : {[key: string]: string},
+    saveDocument(formValues : any) : string,
+    loadDocument(documentId : string) : any,
     getDocuments() : string[]
 }
 
 class LocStorage implements IStorage {
-    saveDocument(formValues: { [key: string]: string; }): string {
-        const documentId : string = "document-" + Date.now();
+    saveDocument(formValues: any, id: string = ""): string {
+        let documentId : string = id;
+
+        if (id === "") {
+            documentId = "document-" + Date.now();
+        }
+        
         this.addDocumentIdToDocumentsList(documentId);
 
         localStorage.setItem(documentId, JSON.stringify(formValues));
 
         return documentId;
     }
-    
-    loadDocument(documentId: string): { [key: string]: string; } {
-        const doc : { [key: string]: string; } = JSON.parse(localStorage.getItem(documentId)!);
+
+    loadDocument(documentId: string): any {
+        const doc = JSON.parse(localStorage.getItem(documentId)!);
 
         return doc;
     }
@@ -41,7 +46,9 @@ class LocStorage implements IStorage {
             documents = JSON.parse(documentsList);
         }
 
-        documents.push(documentId);
+        if(documents.indexOf(documentId) === -1) {
+            documents.push(documentId);
+        }
 
         localStorage.setItem("documentsList", JSON.stringify(documents));
     }

@@ -19,7 +19,6 @@ class DocumentList {
         tableHeaderRow.insertCell().innerText = "Documents:";
         tableHeaderRow.insertCell().innerText = "Actions:";
         const tableBody = table.createTBody();
-        console.log(this.list);
         for (const documentId of this.list) {
             const tableRow = tableBody.insertRow();
             tableRow.insertCell().innerText = documentId;

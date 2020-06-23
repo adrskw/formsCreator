@@ -1,7 +1,10 @@
 export { LocStorage };
 class LocStorage {
-    saveDocument(formValues) {
-        const documentId = "document-" + Date.now();
+    saveDocument(formValues, id = "") {
+        let documentId = id;
+        if (id === "") {
+            documentId = "document-" + Date.now();
+        }
         this.addDocumentIdToDocumentsList(documentId);
         localStorage.setItem(documentId, JSON.stringify(formValues));
         return documentId;
@@ -24,7 +27,9 @@ class LocStorage {
         if (documentsList !== null) {
             documents = JSON.parse(documentsList);
         }
-        documents.push(documentId);
+        if (documents.indexOf(documentId) === -1) {
+            documents.push(documentId);
+        }
         localStorage.setItem("documentsList", JSON.stringify(documents));
     }
 }

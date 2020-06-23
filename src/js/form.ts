@@ -3,10 +3,14 @@ import { LocStorage } from './storage.js';
 export { Form };
 
 class Form {
+    editMode: boolean;
+    documentId: string;
     private fields: IField[];
     
-    constructor(fields: IField[]) {
+    constructor(fields: IField[], editMode: boolean = false, documentId: string = "") {
         this.fields = fields;
+        this.editMode = editMode;
+        this.documentId = documentId;
     }
 
     render(parent: HTMLElement): void {
@@ -49,11 +53,17 @@ class Form {
         parent.appendChild(formElement);
     }
 
-    getValue(): {[key: string]: string}{
-        let resultValues: {[key: string]: string} = {};
+    getValue(): any {
+        let resultValues: any = [];
         
         for (const field of this.fields) {
-            resultValues[field.type + "_" + field.name] = field.getValue(); 
+            resultValues.push({
+                name: field.name,
+                label: field.label,
+                fieldType: field.type,
+                options: field.options,
+                value: field.getValue()
+            });
         }
 
         return resultValues;
@@ -62,6 +72,11 @@ class Form {
     save() : void {
         const locStorage = new LocStorage();
 
-        locStorage.saveDocument(this.getValue());
+        if (this.editMode) {
+            locStorage.saveDocument(this.getValue(), this.documentId);
+        }
+        else {
+            locStorage.saveDocument(this.getValue());
+        }
     }
 }
