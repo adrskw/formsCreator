@@ -28,6 +28,7 @@ class Form {
 
         const divWrapButtons = document.createElement("div");
         divWrapButtons.className = "form-element";
+        divWrapButtons.style.textAlign = "center";
 
         const buttonGoBack = document.createElement("button");
         buttonGoBack.type = "button";
