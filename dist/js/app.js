@@ -33,8 +33,8 @@ class App {
     }
     initializeEditDocument() {
         const documentId = Router.getParam("id");
-        if (documentId && documentId !== "") {
-            const savedDocument = this.docList.getDocument(documentId);
+        const savedDocument = this.docList.getDocument(documentId);
+        if (savedDocument !== null) {
             let formFields = [];
             for (const fieldInfo of savedDocument) {
                 let field;
