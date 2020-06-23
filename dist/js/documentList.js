@@ -12,6 +12,7 @@ class DocumentList {
         return this.locStorage.loadDocument(documentId);
     }
     removeDocument(documentId) {
+        this.locStorage.removeDocument(documentId);
     }
     render(parent) {
         const table = document.createElement("table");
@@ -33,6 +34,7 @@ class DocumentList {
             removeButton.innerText = "Remove";
             removeButton.addEventListener("click", () => {
                 this.removeDocument(documentId);
+                window.location.reload();
             });
             const actionsTableCell = tableRow.insertCell();
             actionsTableCell.appendChild(editButton);

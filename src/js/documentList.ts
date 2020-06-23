@@ -14,7 +14,7 @@ class DocumentList {
     }
 
     removeDocument(documentId : string) : void {
-        
+        this.locStorage.removeDocument(documentId);
     }
 
     render(parent : HTMLElement) : void {
@@ -40,6 +40,7 @@ class DocumentList {
             removeButton.innerText = "Remove";
             removeButton.addEventListener("click", () => {
                 this.removeDocument(documentId);
+                window.location.reload();
             });
 
             const actionsTableCell = tableRow.insertCell();
