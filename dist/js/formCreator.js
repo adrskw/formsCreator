@@ -48,7 +48,7 @@ class FormCreator {
         buttonSave.innerHTML = "Zapisz";
         buttonSave.addEventListener("click", (e) => {
             this.saveForm();
-            //window.location.href = "/index.html";
+            window.location.href = "/index.html";
             e.preventDefault();
         });
         divWrapSubmitButtons.appendChild(buttonGoBack);
@@ -80,7 +80,7 @@ class FormCreator {
     }
     saveForm() {
         const locStorage = new LocStorage();
-        locStorage.saveDocument(this.getFields());
+        locStorage.saveForm(this.getFields());
     }
     generateFieldSettings(parent) {
         const fieldSettigs = document.createElement("div");

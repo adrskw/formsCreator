@@ -57,7 +57,7 @@ class FormCreator {
         buttonSave.innerHTML = "Zapisz"
         buttonSave.addEventListener("click", (e) => {
             this.saveForm();
-            //window.location.href = "/index.html";
+            window.location.href = "/index.html";
             e.preventDefault();
         });
 
@@ -96,7 +96,7 @@ class FormCreator {
 
     saveForm(): void {
         const locStorage = new LocStorage();
-        locStorage.saveDocument(this.getFields());
+        locStorage.saveForm(this.getFields());
     }
 
     private generateFieldSettings(parent: HTMLElement) {
