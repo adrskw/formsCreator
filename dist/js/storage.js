@@ -45,4 +45,49 @@ class LocStorage {
         }
         localStorage.setItem("documentsList", JSON.stringify(documents));
     }
+    saveForm(formValues, id = "") {
+        let formId = id;
+        if (id === "") {
+            formId = "form-" + Date.now();
+        }
+        this.addFormIdToFormsList(formId);
+        localStorage.setItem(formId, JSON.stringify(formValues));
+        return formId;
+    }
+    removeForm(formId) {
+        localStorage.removeItem(formId);
+        const formsList = localStorage.getItem("formsList");
+        let forms = [];
+        if (formsList !== null) {
+            forms = JSON.parse(formsList);
+        }
+        const index = forms.indexOf(formId);
+        if (index !== -1) {
+            forms.splice(index, 1);
+        }
+        localStorage.setItem("formsList", JSON.stringify(forms));
+    }
+    loadForm(formId) {
+        const form = JSON.parse(localStorage.getItem(formId));
+        return form;
+    }
+    getForms() {
+        const formsList = localStorage.getItem("formsList");
+        let forms = [];
+        if (formsList !== null) {
+            forms = JSON.parse(formsList);
+        }
+        return forms;
+    }
+    addFormIdToFormsList(formId) {
+        const formsList = localStorage.getItem("formsList");
+        let forms = [];
+        if (formsList !== null) {
+            forms = JSON.parse(formsList);
+        }
+        if (forms.indexOf(formId) === -1) {
+            forms.push(formId);
+        }
+        localStorage.setItem("formsList", JSON.stringify(forms));
+    }
 }

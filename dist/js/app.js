@@ -2,9 +2,11 @@ import { Router } from './router.js';
 import { Form } from './form.js';
 import { FieldType, InputField, TextAreaField, SelectField, CheckboxField } from './fields.js';
 import { DocumentList } from "./documentList.js";
+import { FormCreator } from "./formCreator.js";
 class App {
     constructor() {
         this.docList = new DocumentList();
+        this.contentDiv = document.getElementById("content");
         this.initialize();
     }
     initialize() {
@@ -18,6 +20,9 @@ class App {
             case '/document-list.html':
                 this.initializeDocumentList();
                 break;
+            case '/new-form.html':
+                this.initializeNewForm();
+                break;
         }
     }
     initializeNewDocument() {
@@ -29,7 +34,7 @@ class App {
             new CheckboxField("isElearningPrefered", "Czy preferujesz e-learning?"),
             new TextAreaField("comments", "Uwagi")
         ]);
-        form.render(document.getElementById("content"));
+        form.render(this.contentDiv);
     }
     initializeEditDocument() {
         const documentId = Router.getParam("id");
@@ -57,15 +62,19 @@ class App {
                 formFields.push(field);
             }
             const form = new Form(formFields, true, documentId);
-            form.render(document.getElementById("content"));
+            form.render(this.contentDiv);
         }
         else {
-            document.getElementById("content").innerHTML = "<p>Given document was not found</p>";
+            this.contentDiv.innerHTML = "<p>Given document was not found</p>";
         }
     }
     initializeDocumentList() {
         this.docList.getDocumentList();
-        this.docList.render(document.getElementById("content"));
+        this.docList.render(this.contentDiv);
+    }
+    initializeNewForm() {
+        const formCreator = new FormCreator();
+        formCreator.newForm(this.contentDiv);
     }
 }
 const app = new App();

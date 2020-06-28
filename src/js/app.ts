@@ -1,10 +1,13 @@
 import { Router } from './router.js';
 import { Form } from './form.js';
-import { FieldType, InputField, TextAreaField, SelectField, CheckboxField, IField } from './fields.js';
+import { FieldType, InputField, TextAreaField, SelectField, CheckboxField, IField, ISavedField } from './fields.js';
 import { DocumentList } from "./documentList.js";
+import { FormCreator } from "./formCreator.js";
 
 class App {
     private docList = new DocumentList();
+    private contentDiv = document.getElementById("content")!;
+
     constructor() {
         this.initialize();
     }
@@ -22,6 +25,10 @@ class App {
             case '/document-list.html':
                 this.initializeDocumentList();
                 break;
+            
+            case '/new-form.html':
+                this.initializeNewForm();
+                break;
         }
     }
 
@@ -35,19 +42,13 @@ class App {
             new TextAreaField("comments", "Uwagi")
         ]);
         
-        form.render(document.getElementById("content")!);
+        form.render(this.contentDiv);
     }
 
     private initializeEditDocument() {
         const documentId = Router.getParam("id");
 
-        const savedDocument: [{
-            name: string,
-            label: string,
-            fieldType: FieldType,
-            options: any,
-            value: string
-        }] = this.docList.getDocument(documentId!);
+        const savedDocument: ISavedField[] = this.docList.getDocument(documentId!);
 
         if (savedDocument !== null) {
             let formFields: IField[] = [];
@@ -78,17 +79,22 @@ class App {
                 formFields.push(field);
             }
 
-            const form = new Form(formFields, true, documentId);
-            form.render(document.getElementById("content")!);
+            const form = new Form(formFields, true, documentId!);
+            form.render(this.contentDiv);
         }
         else {
-            document.getElementById("content")!.innerHTML = "<p>Given document was not found</p>"
+            this.contentDiv.innerHTML = "<p>Given document was not found</p>"
         }
     }
 
     private initializeDocumentList() {
         this.docList.getDocumentList();
-        this.docList.render(document.getElementById("content")!);
+        this.docList.render(this.contentDiv);
+    }
+
+    private initializeNewForm() {
+        const formCreator = new FormCreator();
+        formCreator.newForm(this.contentDiv);
     }
 }
 

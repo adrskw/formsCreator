@@ -1,4 +1,4 @@
-export { FieldType, IField, InputField, TextAreaField, SelectField, CheckboxField }
+export { FieldType, IField, ISavedField, InputField, TextAreaField, SelectField, CheckboxField }
 
 enum FieldType {
     TEXT = "text",
@@ -16,6 +16,14 @@ interface IField {
     options: any,
     render(parent: HTMLElement): void,
     getValue(): string;
+}
+
+interface ISavedField {
+    name: string,
+    label: string,
+    fieldType: FieldType,
+    options: any,
+    value: string
 }
 
 class FieldLabel {
