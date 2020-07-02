@@ -3,9 +3,11 @@ import { Form } from './form.js';
 import { FieldType, InputField, TextAreaField, SelectField, CheckboxField, IField, ISavedField } from './fields.js';
 import { DocumentList } from "./documentList.js";
 import { FormCreator } from "./formCreator.js";
+import { FormList } from './formList.js';
 
 class App {
     private docList = new DocumentList();
+    private formList = new FormList();
     private contentDiv = document.getElementById("content")!;
 
     constructor() {
@@ -33,52 +35,29 @@ class App {
     }
 
     private initializeNewDocument() {
-        const form = new Form([
-            new InputField("name", "Imię", FieldType.TEXT),
-            new InputField("surname", "Nazwisko", FieldType.TEXT),
-            new InputField("email", "E-mail", FieldType.EMAIL),
-            new SelectField("major", "Wybrany kierunek studiów", ["Informatyka i Ekonometria", "Finanse i Rachunkowość", "Zarządzanie"]),
-            new CheckboxField("isElearningPrefered", "Czy preferujesz e-learning?"),
-            new TextAreaField("comments", "Uwagi")
-        ]);
+        const formId = Router.getParam("id")!;
         
-        form.render(this.contentDiv);
+        const filledForm: ISavedField[] = this.formList.getForm(formId);
+        console.log(filledForm);
+        if (filledForm !== null) {
+            const formFields: IField[] = this.generateFieldsFromSavedFields(filledForm);
+
+            const form = new Form(formFields, formId);
+        
+            form.render(this.contentDiv);
+        }
+        else {
+            this.contentDiv.innerHTML = "<p>Given form was not found</p>"
+        }
     }
 
     private initializeEditDocument() {
-        const documentId = Router.getParam("id");
+        const documentId = Router.getParam("id")!;
 
-        const savedDocument: ISavedField[] = this.docList.getDocument(documentId!);
+        const savedDocument: ISavedField[] = this.docList.getDocument(documentId);
 
         if (savedDocument !== null) {
-            let formFields: IField[] = [];
-
-            for (const fieldInfo of savedDocument) {
-                let field: IField;
-
-                switch (fieldInfo.fieldType) {
-                    case FieldType.TEXT:
-                    case FieldType.DATE:
-                    case FieldType.EMAIL:
-                        field = new InputField(fieldInfo.name, fieldInfo.label, fieldInfo.fieldType, fieldInfo.value);
-                        break;
-                
-                    case FieldType.TEXTAREA:
-                        field = new TextAreaField(fieldInfo.name, fieldInfo.label, fieldInfo.value);
-                        break;
-                
-                    case FieldType.SELECT:
-                        field = new SelectField(fieldInfo.name, fieldInfo.label, fieldInfo.options, fieldInfo.value);
-                        break;
-            
-                    case FieldType.CHECKBOX:
-                        field = new CheckboxField(fieldInfo.name, fieldInfo.label, fieldInfo.value);
-                        break;
-                }
-
-                formFields.push(field);
-            }
-
+            const formFields: IField[] = this.generateFieldsFromSavedFields(savedDocument);
             const form = new Form(formFields, "", true, documentId);
             form.render(this.contentDiv);
         }
@@ -95,6 +74,38 @@ class App {
     private initializeNewForm() {
         const formCreator = new FormCreator();
         formCreator.newForm(this.contentDiv);
+    }
+
+    private generateFieldsFromSavedFields(savedFields: ISavedField[]): IField[] {
+        let fields: IField[] = [];
+
+        for (const fieldInfo of savedFields) {
+            let field: IField;
+
+            switch (fieldInfo.fieldType) {
+                case FieldType.TEXT:
+                case FieldType.DATE:
+                case FieldType.EMAIL:
+                    field = new InputField(fieldInfo.name, fieldInfo.label, fieldInfo.fieldType, fieldInfo.value);
+                    break;
+            
+                case FieldType.TEXTAREA:
+                    field = new TextAreaField(fieldInfo.name, fieldInfo.label, fieldInfo.value);
+                    break;
+            
+                case FieldType.SELECT:
+                    field = new SelectField(fieldInfo.name, fieldInfo.label, fieldInfo.options, fieldInfo.value);
+                    break;
+        
+                case FieldType.CHECKBOX:
+                    field = new CheckboxField(fieldInfo.name, fieldInfo.label, fieldInfo.value);
+                    break;
+            }
+
+            fields.push(field);
+        }
+
+        return fields;
     }
 }
 

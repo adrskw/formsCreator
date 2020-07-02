@@ -3,9 +3,11 @@ import { Form } from './form.js';
 import { FieldType, InputField, TextAreaField, SelectField, CheckboxField } from './fields.js';
 import { DocumentList } from "./documentList.js";
 import { FormCreator } from "./formCreator.js";
+import { FormList } from './formList.js';
 class App {
     constructor() {
         this.docList = new DocumentList();
+        this.formList = new FormList();
         this.contentDiv = document.getElementById("content");
         this.initialize();
     }
@@ -26,42 +28,24 @@ class App {
         }
     }
     initializeNewDocument() {
-        const form = new Form([
-            new InputField("name", "Imię", FieldType.TEXT),
-            new InputField("surname", "Nazwisko", FieldType.TEXT),
-            new InputField("email", "E-mail", FieldType.EMAIL),
-            new SelectField("major", "Wybrany kierunek studiów", ["Informatyka i Ekonometria", "Finanse i Rachunkowość", "Zarządzanie"]),
-            new CheckboxField("isElearningPrefered", "Czy preferujesz e-learning?"),
-            new TextAreaField("comments", "Uwagi")
-        ]);
-        form.render(this.contentDiv);
+        const formId = Router.getParam("id");
+        const filledForm = this.formList.getForm(formId);
+        console.log(filledForm);
+        if (filledForm !== null) {
+            const formFields = this.generateFieldsFromSavedFields(filledForm);
+            const form = new Form(formFields, formId);
+            form.render(this.contentDiv);
+        }
+        else {
+            this.contentDiv.innerHTML = "<p>Given form was not found</p>";
+        }
     }
     initializeEditDocument() {
         const documentId = Router.getParam("id");
         const savedDocument = this.docList.getDocument(documentId);
         if (savedDocument !== null) {
-            let formFields = [];
-            for (const fieldInfo of savedDocument) {
-                let field;
-                switch (fieldInfo.fieldType) {
-                    case FieldType.TEXT:
-                    case FieldType.DATE:
-                    case FieldType.EMAIL:
-                        field = new InputField(fieldInfo.name, fieldInfo.label, fieldInfo.fieldType, fieldInfo.value);
-                        break;
-                    case FieldType.TEXTAREA:
-                        field = new TextAreaField(fieldInfo.name, fieldInfo.label, fieldInfo.value);
-                        break;
-                    case FieldType.SELECT:
-                        field = new SelectField(fieldInfo.name, fieldInfo.label, fieldInfo.options, fieldInfo.value);
-                        break;
-                    case FieldType.CHECKBOX:
-                        field = new CheckboxField(fieldInfo.name, fieldInfo.label, fieldInfo.value);
-                        break;
-                }
-                formFields.push(field);
-            }
-            const form = new Form(formFields, true, documentId);
+            const formFields = this.generateFieldsFromSavedFields(savedDocument);
+            const form = new Form(formFields, "", true, documentId);
             form.render(this.contentDiv);
         }
         else {
@@ -75,6 +59,30 @@ class App {
     initializeNewForm() {
         const formCreator = new FormCreator();
         formCreator.newForm(this.contentDiv);
+    }
+    generateFieldsFromSavedFields(savedFields) {
+        let fields = [];
+        for (const fieldInfo of savedFields) {
+            let field;
+            switch (fieldInfo.fieldType) {
+                case FieldType.TEXT:
+                case FieldType.DATE:
+                case FieldType.EMAIL:
+                    field = new InputField(fieldInfo.name, fieldInfo.label, fieldInfo.fieldType, fieldInfo.value);
+                    break;
+                case FieldType.TEXTAREA:
+                    field = new TextAreaField(fieldInfo.name, fieldInfo.label, fieldInfo.value);
+                    break;
+                case FieldType.SELECT:
+                    field = new SelectField(fieldInfo.name, fieldInfo.label, fieldInfo.options, fieldInfo.value);
+                    break;
+                case FieldType.CHECKBOX:
+                    field = new CheckboxField(fieldInfo.name, fieldInfo.label, fieldInfo.value);
+                    break;
+            }
+            fields.push(field);
+        }
+        return fields;
     }
 }
 const app = new App();

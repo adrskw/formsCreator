@@ -14,7 +14,7 @@ class Form {
         this.documentId = documentId;
         this.formId = formId;
     }
-
+    
     render(parent: HTMLElement): void {
         const formElement = document.createElement("form");
 
