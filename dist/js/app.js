@@ -22,6 +22,9 @@ class App {
             case '/document-list.html':
                 this.initializeDocumentList();
                 break;
+            case '/form-list.html':
+                this.initializeFormList();
+                break;
             case '/new-form.html':
                 this.initializeNewForm();
                 break;
@@ -30,14 +33,13 @@ class App {
     initializeNewDocument() {
         const formId = Router.getParam("id");
         const filledForm = this.formList.getForm(formId);
-        console.log(filledForm);
         if (filledForm !== null) {
             const formFields = this.generateFieldsFromSavedFields(filledForm);
             const form = new Form(formFields, formId);
             form.render(this.contentDiv);
         }
         else {
-            this.contentDiv.innerHTML = "<p>Given form was not found</p>";
+            window.location.href = "/form-list.html";
         }
     }
     initializeEditDocument() {
@@ -55,6 +57,10 @@ class App {
     initializeDocumentList() {
         this.docList.getDocumentList();
         this.docList.render(this.contentDiv);
+    }
+    initializeFormList() {
+        this.formList.getFormList();
+        this.formList.render(this.contentDiv);
     }
     initializeNewForm() {
         const formCreator = new FormCreator();

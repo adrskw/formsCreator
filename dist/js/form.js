@@ -32,7 +32,7 @@ class Form {
         buttonSave.innerHTML = "Zapisz";
         buttonSave.addEventListener("click", (e) => {
             this.save();
-            window.location.href = "/index.html";
+            window.location.href = "/document-list.html";
             e.preventDefault();
         });
         divWrapButtons.appendChild(buttonSave);

@@ -28,6 +28,10 @@ class App {
                 this.initializeDocumentList();
                 break;
             
+            case '/form-list.html':
+                this.initializeFormList();
+                break;
+            
             case '/new-form.html':
                 this.initializeNewForm();
                 break;
@@ -38,7 +42,7 @@ class App {
         const formId = Router.getParam("id")!;
         
         const filledForm: ISavedField[] = this.formList.getForm(formId);
-        console.log(filledForm);
+
         if (filledForm !== null) {
             const formFields: IField[] = this.generateFieldsFromSavedFields(filledForm);
 
@@ -47,7 +51,7 @@ class App {
             form.render(this.contentDiv);
         }
         else {
-            this.contentDiv.innerHTML = "<p>Given form was not found</p>"
+            window.location.href = "/form-list.html";
         }
     }
 
@@ -62,13 +66,18 @@ class App {
             form.render(this.contentDiv);
         }
         else {
-            this.contentDiv.innerHTML = "<p>Given document was not found</p>"
+            this.contentDiv.innerHTML = "<p>Given document was not found</p>";
         }
     }
 
     private initializeDocumentList() {
         this.docList.getDocumentList();
         this.docList.render(this.contentDiv);
+    }
+
+    private initializeFormList() {
+        this.formList.getFormList();
+        this.formList.render(this.contentDiv);
     }
 
     private initializeNewForm() {

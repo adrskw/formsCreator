@@ -48,7 +48,7 @@ class FormCreator {
         buttonSave.innerHTML = "Zapisz";
         buttonSave.addEventListener("click", (e) => {
             this.saveForm();
-            window.location.href = "/index.html";
+            window.location.href = "/form-list.html";
             e.preventDefault();
         });
         divWrapSubmitButtons.appendChild(buttonGoBack);
