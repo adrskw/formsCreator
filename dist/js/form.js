@@ -21,7 +21,7 @@ class Form {
         divWrapButtons.style.textAlign = "center";
         const buttonGoBack = document.createElement("button");
         buttonGoBack.type = "button";
-        buttonGoBack.innerHTML = "Wstecz";
+        buttonGoBack.innerHTML = "Go back";
         buttonGoBack.addEventListener("click", (e) => {
             window.location.href = "/index.html";
             e.preventDefault();
@@ -29,7 +29,7 @@ class Form {
         divWrapButtons.appendChild(buttonGoBack);
         const buttonSave = document.createElement("button");
         buttonSave.type = "submit";
-        buttonSave.innerHTML = "Zapisz";
+        buttonSave.innerHTML = "Save";
         buttonSave.addEventListener("click", (e) => {
             this.save();
             window.location.href = "/document-list.html";
