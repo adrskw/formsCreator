@@ -79,7 +79,7 @@ class App {
                 formFields.push(field);
             }
 
-            const form = new Form(formFields, true, documentId!);
+            const form = new Form(formFields, "", true, documentId);
             form.render(this.contentDiv);
         }
         else {

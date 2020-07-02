@@ -1,10 +1,11 @@
 import { LocStorage } from './storage.js';
 export { Form };
 class Form {
-    constructor(fields, editMode = false, documentId = "") {
+    constructor(fields, formId = "", editMode = false, documentId = "") {
         this.fields = fields;
         this.editMode = editMode;
         this.documentId = documentId;
+        this.formId = formId;
     }
     render(parent) {
         const formElement = document.createElement("form");

@@ -5,12 +5,14 @@ export { Form };
 class Form {
     editMode: boolean;
     documentId: string;
+    formId: string;
     private fields: IField[];
     
-    constructor(fields: IField[], editMode: boolean = false, documentId: string = "") {
+    constructor(fields: IField[], formId: string = "", editMode: boolean = false, documentId: string = "") {
         this.fields = fields;
         this.editMode = editMode;
         this.documentId = documentId;
+        this.formId = formId;
     }
 
     render(parent: HTMLElement): void {
