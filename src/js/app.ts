@@ -18,7 +18,7 @@ class App {
         switch (Router.getPath()) {
             case '/new-document.html':
                 this.initializeNewDocument();
-                break
+                break;
 
             case '/edit-document.html':
                 this.initializeEditDocument();
